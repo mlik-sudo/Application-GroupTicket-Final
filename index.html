@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroupTicket 4.0 - Espace pour la Vie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 1rem; }
+        .glass-card { background-color: rgba(255, 255, 255, 0.25); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%); border-radius: 20px; border: 1px solid rgba(209, 213, 219, 0.3); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15); }
+        .form-input, .form-select { background-color: rgba(255, 255, 255, 0.5); border-radius: 10px; border: 1px solid rgba(209, 213, 219, 0.4); padding: 0.75rem 1rem; transition: all 0.3s ease; }
+        .form-input:focus, .form-select:focus { background-color: rgba(255, 255, 255, 0.8); border-color: #66a6ff; box-shadow: 0 0 0 3px rgba(102, 166, 255, 0.3); }
+        .btn { border-radius: 10px; padding: 0.6rem 1.2rem; font-weight: 600; transition: all 0.2s ease-in-out; cursor: pointer; }
+        .btn-primary { background-color: #4f46e5; color: white; }
+        .btn-primary:hover { background-color: #4338ca; }
+        .btn-secondary { background-color: #e0e7ff; color: #3730a3; }
+        .btn-secondary:hover { background-color: #c7d2fe; }
+        .btn-success { background-color: #10b981; color: white; }
+        .btn-success:hover { background-color: #059669; }
+        .emotion-btn { transform: scale(1); transition: transform 0.2s ease; }
+        .emotion-btn:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="w-full max-w-7xl p-4 md:p-6">
+        <header class="mb-6 md:mb-8 text-center"><h1 class="text-3xl md:text-4xl font-bold text-white" data-translate-key="pageHeader">Calculateur de Billets de Groupe</h1><p class="text-lg text-white opacity-80" data-translate-key="pageSubheader">Espace pour la Vie Montréal</p></header>
+        <div class="mb-4 flex justify-end"><button id="langToggle" class="btn btn-secondary text-sm" data-translate-key="toggleLang">Switch to English</button></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <section id="formSection" class="glass-card p-6 md:p-8 space-y-5">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4" data-translate-key="formTitle">Informations du Groupe</h2>
+                <div><label for="groupType" class="block text-sm font-medium text-gray-700" data-translate-key="groupTypeLabel">Type de groupe</label><select id="groupType" class="form-select w-full mt-1"><option value="TourOperateur" data-translate-key="groupTypeOptTourOperateur">Tour Opérateur</option><option value="GroupeScolaire" data-translate-key="groupTypeOptGroupeScolaire">Groupe Scolaire</option><option value="Autres" data-translate-key="groupTypeOptAutres">Autres</option><option value="CDJ_Ville" data-translate-key="groupTypeOptCDJVille">CDJ Ville</option><option value="CDJ_HorsVille" data-translate-key="groupTypeOptCDJHorsVille">CDJ Hors Ville</option><option value="BesoinsParticuliers" data-translate-key="groupTypeOptBesoinsParticuliers">Besoins Particuliers</option><option value="Groupe_0_4_payant" data-translate-key="groupTypeOptGroupe04Payant">Groupe 0-4 payant</option></select></div>
+                <div><label for="nbAdultes" class="block text-sm font-medium text-gray-700" data-translate-key="nbAdultesLabel">Adultes (18-64)</label><input type="number" id="nbAdultes" value="0" min="0" class="form-input w-full mt-1"></div>
+                <div><label for="nbAines" class="block text-sm font-medium text-gray-700" data-translate-key="nbAinesLabel">Aînés (65+)</label><input type="number" id="nbAines" value="0" min="0" class="form-input w-full mt-1"></div>
+                <div><label for="nbEtudiants" class="block text-sm font-medium text-gray-700" data-translate-key="nbEtudiantsLabel">Étudiants (18-25 avec carte)</label><input type="number" id="nbEtudiants" value="0" min="0" class="form-input w-full mt-1"></div>
+                <div><label for="nbEnfants517" class="block text-sm font-medium text-gray-700" data-translate-key="nbEnfants517Label">Enfants (5-17)</label><input type="number" id="nbEnfants517" value="0" min="0" class="form-input w-full mt-1"></div>
+                <div><label for="nbEnfants04" class="block text-sm font-medium text-gray-700" data-translate-key="nbEnfants04Label">Enfants (0-4) (généralement gratuits)</label><input type="number" id="nbEnfants04" value="0" min="0" class="form-input w-full mt-1"></div>
+                <div><label for="nbAccompagnateursBP" class="block text-sm font-medium text-gray-700" data-translate-key="nbAccompagnateursBPLabel">Accompagnateurs (besoins spéc. - gratuité)</label><input type="number" id="nbAccompagnateursBP" value="0" min="0" class="form-input w-full mt-1"></div>
+                <div><label for="nbBus" class="block text-sm font-medium text-gray-700" data-translate-key="nbBusLabel">Nombre de bus</label><input type="number" id="nbBus" value="0" min="0" class="form-input w-full mt-1"></div>
+                <div id="nbClassesContainer" class="hidden"><label for="nbClasses" class="block text-sm font-medium text-gray-700" data-translate-key="nbClassesLabel">Nombre de classes (pour Groupe Scolaire)</label><input type="number" id="nbClasses" value="0" min="0" class="form-input w-full mt-1"></div>
+            </section>
+            <section id="resultsSection" class="glass-card p-6 md:p-8 space-y-4">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4" data-translate-key="resultsTitle">Résultats du Calcul</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"><div class="p-3 bg-blue-100 rounded-lg shadow"><h3 class="font-semibold text-blue-800" data-translate-key="payingVisitorsLabel">Visiteurs Payants</h3><p id="resPayingVisitors" class="text-3xl font-bold text-blue-600">0</p></div><div class="p-3 bg-green-100 rounded-lg shadow"><h3 class="font-semibold text-green-800" data-translate-key="groupGratuitiesLabel">Gratuités Groupe</h3><p id="resGroupGratuities" class="text-3xl font-bold text-green-600">0</p></div></div>
+                <div id="resGratuityDistributionContainer" class="p-3 bg-gray-100 rounded-lg shadow"><h3 class="font-semibold text-gray-800 mb-2" data-translate-key="gratuityDistributionLabel">Répartition des Gratuités</h3><ul class="text-sm list-disc list-inside space-y-1 text-gray-700"><li><span data-translate-key="adultsLabelShort">Adultes</span>: <span id="distAdultes">0</span></li><li><span data-translate-key="seniorsLabelShort">Aînés</span>: <span id="distAines">0</span></li><li><span data-translate-key="studentsLabelShort">Étudiants</span>: <span id="distEtudiants">0</span></li><li><span data-translate-key="children517LabelShort">Enfants 5-17</span>: <span id="distEnfants517">0</span></li></ul></div>
+                <div id="resSpecialTicketsContainer" class="p-3 bg-yellow-100 rounded-lg shadow hidden"><h3 class="font-semibold text-yellow-800 mb-2" data-translate-key="specialTicketsLabel">Billets Spéciaux</h3><p class="font-semibold"><span data-translate-key="totalSpecialTicketsLabel">Total</span>: <span id="resTotalSpecialTickets">0</span></p></div>
+                <div class="p-4 bg-purple-100 rounded-lg shadow"><h3 class="font-semibold text-purple-800" data-translate-key="totalPresentLabel">Total Personnes Présentes</h3><p id="resTotalPresent" class="text-3xl font-bold text-purple-600">0</p></div>
+                <div class="flex flex-col sm:flex-row gap-3 pt-4"><button id="registerGroupBtn" class="btn btn-success flex-1" data-translate-key="registerGroup">Enregistrer le Groupe</button><button id="exportJsonBtn" class="btn btn-primary flex-1" data-translate-key="exportJson">Exporter en JSON</button></div>
+            </section>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-8">
+            <section class="glass-card p-6 md:p-8 text-center"><h2 class="text-2xl font-semibold text-gray-700 mb-4" data-translate-key="thermometerTitle">Thermomètre de Groupe</h2><div class="flex items-end justify-center gap-4 h-64"><div class="w-16 h-full bg-white/30 rounded-full flex items-end"><div id="thermometerLevel" class="w-full rounded-full" style="height: 0%;"></div></div><div class="text-left text-gray-700"><p class="text-5xl font-bold"><span id="groupCount">0</span>/100</p><p class="text-xl font-semibold" id="ambiance" data-translate-key="ambianceCool">Cool</p><button id="resetCounterBtn" class="btn btn-secondary text-xs mt-4" data-translate-key="resetCounter">Reset</button></div></div></section>
+            <section class="glass-card p-6 md:p-8"><div class="flex justify-between items-start"><h2 class="text-2xl font-semibold text-gray-700 mb-4" data-translate-key="emotionTrackerTitle">Sondage Émotionnel</h2><button id="resetEmotionsBtn" class="btn btn-secondary text-xs" data-translate-key="resetCounter">Reset</button></div><p class="text-sm text-gray-600 mb-4" data-translate-key="emotionTrackerSub">Cliquez pour enregistrer une émotion.</p><div class="flex justify-around mb-6"><button class="text-4xl emotion-btn" data-emotion="frustre">😡</button><button class="text-4xl emotion-btn" data-emotion="inquiet">😟</button><button class="text-4xl emotion-btn" data-emotion="neutre">😐</button><button class="text-4xl emotion-btn" data-emotion="positif">😊</button><button class="text-4xl emotion-btn" data-emotion="enthousiaste">🎉</button></div><div class="space-y-3"><div><div class="flex items-center gap-2"><span class="w-24 text-sm font-medium text-gray-700" data-translate-key="emotionFrustre">Frustré</span><div class="w-full bg-gray-200/50 rounded-full h-4"><div id="bar-frustre" class="bg-red-500 h-4 rounded-full transition-all duration-500" style="width: 0%"></div></div><span id="count-frustre" class="text-sm font-bold w-6 text-right">0</span></div></div><div><div class="flex items-center gap-2"><span class="w-24 text-sm font-medium text-gray-700" data-translate-key="emotionInquiet">Inquiet</span><div class="w-full bg-gray-200/50 rounded-full h-4"><div id="bar-inquiet" class="bg-yellow-500 h-4 rounded-full transition-all duration-500" style="width: 0%"></div></div><span id="count-inquiet" class="text-sm font-bold w-6 text-right">0</span></div></div><div><div class="flex items-center gap-2"><span class="w-24 text-sm font-medium text-gray-700" data-translate-key="emotionNeutre">Neutre</span><div class="w-full bg-gray-200/50 rounded-full h-4"><div id="bar-neutre" class="bg-gray-400 h-4 rounded-full transition-all duration-500" style="width: 0%"></div></div><span id="count-neutre" class="text-sm font-bold w-6 text-right">0</span></div></div><div><div class="flex items-center gap-2"><span class="w-24 text-sm font-medium text-gray-700" data-translate-key="emotionPositif">Positif</span><div class="w-full bg-gray-200/50 rounded-full h-4"><div id="bar-positif" class="bg-green-500 h-4 rounded-full transition-all duration-500" style="width: 0%"></div></div><span id="count-positif" class="text-sm font-bold w-6 text-right">0</span></div></div><div><div class="flex items-center gap-2"><span class="w-24 text-sm font-medium text-gray-700" data-translate-key="emotionEnthousiaste">Enthousiaste</span><div class="w-full bg-gray-200/50 rounded-full h-4"><div id="bar-enthousiaste" class="bg-blue-500 h-4 rounded-full transition-all duration-500" style="width: 0%"></div></div><span id="count-enthousiaste" class="text-sm font-bold w-6 text-right">0</span></div></div></div></section>
+        </div>
+        <footer class="mt-8 text-center"><p class="text-sm text-white opacity-70" data-translate-key="footerText">&copy; 2024 Espace pour la Vie - GroupTicket 4.0. Tous droits réservés.</p></footer>
+    </div>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // --- NOUVELLE CONFIGURATION FONCTIONNELLE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBqf12eqhS7dWwwVpEn3nX9hah2vxNyAjI",
+            authDomain: "groupticket-live.firebaseapp.com",
+            projectId: "groupticket-live",
+            storageBucket: "groupticket-live.appspot.com",
+            messagingSenderId: "505188495078",
+            appId: "1:505188495078:web:f508ba2405e6d0be91d527",
+            measurementId: "G-ZNB9492LR2"
+        };
+
+        // --- Firebase Initialization ---
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = firebaseConfig.appId;
+
+        // --- DOM Elements ---
+        const thermometerLevel = document.getElementById('thermometerLevel');
+        const groupCountDisplay = document.getElementById('groupCount');
+        const ambianceDisplay = document.getElementById('ambiance');
+        const registerGroupBtn = document.getElementById('registerGroupBtn');
+        const resetCounterBtn = document.getElementById('resetCounterBtn');
+        const emotionButtons = document.querySelectorAll('.emotion-btn');
+        const resetEmotionsBtn = document.getElementById('resetEmotionsBtn');
+        
+        const MAX_GROUPS = 100;
+        let groupCounterDocRef;
+        let emotionTrackerDocRef;
+
+        // --- Authentication and Data Setup ---
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                const dailyMetricsPath = `dailyMetrics`; 
+                groupCounterDocRef = doc(db, dailyMetricsPath, 'liveCounter');
+                emotionTrackerDocRef = doc(db, dailyMetricsPath, 'emotionTracker');
+                
+                onSnapshot(groupCounterDocRef, (docSnap) => {
+                    const count = docSnap.exists() ? docSnap.data().groupCount || 0 : 0;
+                    if (!docSnap.exists()) setDoc(groupCounterDocRef, { groupCount: 0 });
+                    updateThermometerUI(count);
+                });
+
+                onSnapshot(emotionTrackerDocRef, (docSnap) => {
+                    const defaultEmotions = { frustre: 0, inquiet: 0, neutre: 0, positif: 0, enthousiaste: 0 };
+                    const emotionData = docSnap.exists() ? { ...defaultEmotions, ...docSnap.data() } : defaultEmotions;
+                    if (!docSnap.exists()) setDoc(emotionTrackerDocRef, defaultEmotions);
+                    updateEmotionUI(emotionData);
+                });
+            } else {
+                signInAnonymously(auth).catch((error) => console.error("Anonymous auth failed", error));
+            }
+        });
+        
+        // --- UI Update Functions ---
+        function updateThermometerUI(count) {
+            const percentage = Math.min((count / MAX_GROUPS) * 100, 100);
+            let colorClass = 'bg-blue-500', ambianceKey = 'ambianceCool';
+            if (count >= 40) { colorClass = 'bg-red-700'; ambianceKey = 'ambianceExtreme'; }
+            else if (count >= 30) { colorClass = 'bg-red-500'; ambianceKey = 'ambianceVeryHot'; }
+            else if (count >= 20) { colorClass = 'bg-orange-500'; ambianceKey = 'ambianceHot'; }
+            thermometerLevel.style.height = `${percentage}%`;
+            thermometerLevel.className = `w-full rounded-full transition-all duration-500 ${colorClass}`;
+            groupCountDisplay.textContent = count;
+            const currentLang = document.documentElement.lang || 'fr';
+            if (window.translations && window.translations[currentLang]) {
+                ambianceDisplay.textContent = window.translations[currentLang][ambianceKey] || window.translations.fr[ambianceKey];
+                ambianceDisplay.dataset.translateKey = ambianceKey;
+            }
+        }
+        
+        function updateEmotionUI(data) {
+            const total = Object.values(data).reduce((sum, count) => sum + count, 0);
+            for (const emotion in data) {
+                const count = data[emotion];
+                const percentage = total > 0 ? (count / total) * 100 : 0;
+                const bar = document.getElementById(`bar-${emotion}`), countEl = document.getElementById(`count-${emotion}`);
+                if(bar) bar.style.width = `${percentage}%`;
+                if(countEl) countEl.textContent = count;
+            }
+        }
+
+        async function updateFirestore(docRef, field) {
+            if (!auth.currentUser || !docRef) return;
+            try {
+                await updateDoc(docRef, { [field]: increment(1) });
+            } catch (e) {
+                if (e.code === 'not-found') {
+                    const newDoc = { frustre: 0, inquiet: 0, neutre: 0, positif: 0, enthousiaste: 0 };
+                    if (field === "groupCount") {
+                         await setDoc(docRef, { groupCount: 1 });
+                    } else {
+                        newDoc[field] = 1;
+                        await setDoc(docRef, newDoc);
+                    }
+                } else console.error(e);
+            }
+        }
+        
+        // --- Event Handlers ---
+        registerGroupBtn.addEventListener('click', () => updateFirestore(groupCounterDocRef, 'groupCount'));
+        resetCounterBtn.addEventListener('click', () => setDoc(groupCounterDocRef, { groupCount: 0 }));
+        emotionButtons.forEach(button => button.addEventListener('click', () => updateFirestore(emotionTrackerDocRef, button.dataset.emotion)));
+        resetEmotionsBtn.addEventListener('click', () => setDoc(emotionTrackerDocRef, { frustre: 0, inquiet: 0, neutre: 0, positif: 0, enthousiaste: 0 }));
+    </script>
+    <script>
+        // --- Translations & Calculator Logic ---
+        (function() {
+            window.translations={fr:{appTitle:"GroupTicket 4.0 - Espace pour la Vie",pageHeader:"Calculateur de Billets de Groupe",pageSubheader:"Espace pour la Vie Montréal",toggleLang:"Switch to English",formTitle:"Informations du Groupe",groupTypeLabel:"Type de groupe",groupTypeOptTourOperateur:"Tour Opérateur",groupTypeOptGroupeScolaire:"Groupe Scolaire",groupTypeOptAutres:"Autres",groupTypeOptCDJVille:"CDJ Ville",groupTypeOptCDJHorsVille:"CDJ Hors Ville",groupTypeOptBesoinsParticuliers:"Besoins Particuliers",groupTypeOptGroupe04Payant:"Groupe 0-4 payant",nbAdultesLabel:"Adultes (18-64)",nbAinesLabel:"Aînés (65+)",nbEtudiantsLabel:"Étudiants (18-25 avec carte)",nbEnfants517Label:"Enfants (5-17)",nbEnfants04Label:"Enfants (0-4) (généralement gratuits)",nbAccompagnateursBPLabel:"Accompagnateurs (besoins spéc. - gratuité)",nbBusLabel:"Nombre de bus",nbClassesLabel:"Nombre de classes (pour Groupe Scolaire)",resultsTitle:"Résultats du Calcul",payingVisitorsLabel:"Visiteurs Payants",groupGratuitiesLabel:"Gratuités Groupe",gratuityDistributionLabel:"Répartition des Gratuités",adultsLabelShort:"Adultes",seniorsLabelShort:"Aînés",studentsLabelShort:"Étudiants",children517LabelShort:"Enfants 5-17",specialTicketsLabel:"Billets Spéciaux",totalSpecialTicketsLabel:"Total",totalPresentLabel:"Total Personnes Présentes",registerGroup:"Enregistrer le Groupe",exportJson:"Exporter en JSON",footerText:"© 2024 Espace pour la Vie - GroupTicket 4.0. Tous droits réservés.",thermometerTitle:"Thermomètre de Groupe",resetCounter:"Reset",ambianceCool:"Ambiance Cool",ambianceHot:"Ambiance Chaude",ambianceVeryHot:"Très Chaud !",ambianceExtreme:"Extrême !",emotionTrackerTitle:"Sondage Émotionnel",emotionTrackerSub:"Cliquez pour enregistrer une émotion.",emotionFrustre:"Frustré",emotionInquiet:"Inquiet",emotionNeutre:"Neutre",emotionPositif:"Positif",emotionEnthousiaste:"Enthousiaste"},en:{appTitle:"GroupTicket 4.0 - Space for Life",pageHeader:"Group Ticket Calculator",pageSubheader:"Space for Life Montreal",toggleLang:"Passer en Français",formTitle:"Group Information",groupTypeLabel:"Group Type",groupTypeOptTourOperateur:"Tour Operator",groupTypeOptGroupeScolaire:"School Group",groupTypeOptAutres:"Others",groupTypeOptCDJVille:"CDJ City",groupTypeOptCDJHorsVille:"CDJ Outside City",groupTypeOptBesoinsParticuliers:"Special Needs",groupTypeOptGroupe04Payant:"Paying Group 0-4",nbAdultesLabel:"Adults (18-64)",nbAinesLabel:"Seniors (65+)",nbEtudiantsLabel:"Students (18-25 with card)",nbEnfants517Label:"Children (5-17)",nbEnfants04Label:"Children (0-4) (usually free)",nbAccompagnateursBPLabel:"Supervisors (special needs - free)",nbBusLabel:"Number of buses",nbClassesLabel:"Number of classes (for School Group)",resultsTitle:"Calculation Results",payingVisitorsLabel:"Paying Visitors",groupGratuitiesLabel:"Group Gratuities",gratuityDistributionLabel:"Gratuity Distribution",adultsLabelShort:"Adults",seniorsLabelShort:"Seniors",studentsLabelShort:"Students",children517LabelShort:"Children 5-17",specialTicketsLabel:"Special Tickets",totalSpecialTicketsLabel:"Total",totalPresentLabel:"Total Persons Present",registerGroup:"Register Group",exportJson:"Export to JSON",footerText:"© 2024 Space for Life - GroupTicket 4.0. All rights reserved.",thermometerTitle:"Group Thermometer",resetCounter:"Reset",ambianceCool:"Cool Vibe",ambianceHot:"Getting Warm",ambianceVeryHot:"Very Hot!",ambianceExtreme:"Extreme!",emotionTrackerTitle:"Emotion Poll",emotionTrackerSub:"Click an emoji to log an emotion.",emotionFrustre:"Frustrated",emotionInquiet:"Worried",emotionNeutre:"Neutral",emotionPositif:"Positive",emotionEnthousiaste:"Enthusiastic"}};
+            let currentLang="fr";
+            const formElements={groupType:document.getElementById("groupType"),nbAdultes:document.getElementById("nbAdultes"),nbAines:document.getElementById("nbAines"),nbEtudiants:document.getElementById("nbEtudiants"),nbEnfants517:document.getElementById("nbEnfants517"),nbEnfants04:document.getElementById("nbEnfants04"),nbAccompagnateursBP:document.getElementById("nbAccompagnateursBP"),nbBus:document.getElementById("nbBus"),nbClasses:document.getElementById("nbClasses"),nbClassesContainer:document.getElementById("nbClassesContainer")};
+            const resultElements={payingVisitors:document.getElementById("resPayingVisitors"),groupGratuities:document.getElementById("resGroupGratuities"),distAdultes:document.getElementById("distAdultes"),distAines:document.getElementById("distAines"),distEtudiants:document.getElementById("distEtudiants"),distEnfants517:document.getElementById("distEnfants517"),totalSpecialTickets:document.getElementById("resTotalSpecialTickets"),specialTicketsContainer:document.getElementById("resSpecialTicketsContainer"),totalPresent:document.getElementById("resTotalPresent")};
+            const langToggleButton=document.getElementById("langToggle"),exportJsonBtn=document.getElementById("exportJsonBtn");
+            function safeParseInt(e){const t=parseInt(e,10);return isNaN(t)||t<0?0:t}function updateTexts(){document.documentElement.lang=currentLang;const e=document.querySelectorAll("[data-translate-key]");e.forEach(e=>{const t=e.dataset.translateKey;window.translations[currentLang][t]&&(e.textContent=window.translations[currentLang][t])})}function toggleLanguage(){currentLang="fr"===currentLang?"en":"fr",updateTexts();const e=document.getElementById("ambiance"),t=e.dataset.translateKey;t&&window.translations[currentLang][t]&&(e.textContent=window.translations[currentLang][t])}function calculateTicketLogic(e){const{groupType:t,nbAdultes:n,nbAines:a,nbEtudiants:o,nbEnfants517:r,nbEnfants04:s,nbAccompagnateursBP:l,nbBus:i,nbClasses:c}=e;let d=n+a+o+r,p=["TourOperateur","GroupeScolaire","Autres","CDJ_HorsVille"].includes(t)?i:0,m="TourOperateur"===t?i:0,u="GroupeScolaire"===t?c:0,b=p+m+u+l,f=d,g=0;if("CDJ_Ville"===t||"BesoinsParticuliers"===t)g=Math.floor(f/10);else if("Groupe_0_4_payant"!==t)f>=21&&f<=41?g=1:f>=42&&f<=62?g=2:f>=63&&f<=83?g=3:f>=84&&f<=104?g=4:f>=105&&f<=125?g=5:f>=126&&f<=146?g=6:f>=147&&f<=167?g=7:f>=168&&f<=188?g=8:f>=189&&f<=209?g=9:f>=210&&f<=230?g=10:f>=231&&f<=251?g=11:f>=252&&f<=272?g=12:f>272&&(g=12);g=Math.min(g,f);let v=f-g,y=v+g+s+b,E=g,k=Math.min(E,n);E-=k;let w=Math.min(E,a);E-=w;let L=Math.min(E,o);E-=L;let B=Math.min(E,r);return{payants_finaux:v,gratuites_groupe:g,total_personnes:y,billets_speciaux:b,repartition:{adultes:k,aines:w,etudiants:L,enfants517:B}}}function calculateAndDisplayResults(){const e={groupType:formElements.groupType.value,nbAdultes:safeParseInt(formElements.nbAdultes.value),nbAines:safeParseInt(formElements.nbAines.value),nbEtudiants:safeParseInt(formElements.nbEtudiants.value),nbEnfants517:safeParseInt(formElements.nbEnfants517.value),nbEnfants04:safeParseInt(formElements.nbEnfants04.value),nbAccompagnateursBP:safeParseInt(formElements.nbAccompagnateursBP.value),nbBus:safeParseInt(formElements.nbBus.value),nbClasses:safeParseInt(formElements.nbClasses.value)};formElements.nbClassesContainer.classList.toggle("hidden","GroupeScolaire"!==e.groupType),"GroupeScolaire"!==e.groupType&&(e.nbClasses=0);const t=calculateTicketLogic(e);resultElements.payingVisitors.textContent=t.payants_finaux,resultElements.groupGratuities.textContent=t.gratuites_groupe,resultElements.distAdultes.textContent=t.repartition.adultes,resultElements.distAines.textContent=t.repartition.aines,resultElements.distEtudiants.textContent=t.repartition.etudiants,resultElements.distEnfants517.textContent=t.repartition.enfants517,resultElements.totalSpecialTickets.textContent=t.billets_speciaux,resultElements.specialTicketsContainer.classList.toggle("hidden",0===t.billets_speciaux),resultElements.totalPresent.textContent=t.total_personnes,window.currentResults={...e,...t}}function exportJSON(){if(window.currentResults){const e=JSON.stringify(window.currentResults,null,2),t="data:application/json;charset=utf-8,"+encodeURIComponent(e),n=document.createElement("a");n.setAttribute("href",t),n.setAttribute("download","GroupTicket_export.json"),n.click()}}Object.values(formElements).forEach(e=>{e.addEventListener("input",calculateAndDisplayResults)}),langToggleButton.addEventListener("click",toggleLanguage),exportJsonBtn.addEventListener("click",exportJSON),updateTexts(),calculateAndDisplayResults();
+        })();
+    </script>
+</body>
+</html>
